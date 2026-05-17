@@ -23,7 +23,7 @@ export function EditModal({desDetailsData}) {
         console.log(destination);
         
         // server e j post korce oita ekane connect kora lage
-        const res = await fetch(`http://localhost:8000/destination/${_id}`,{
+        const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/destination/${_id}`,{
           method: "PATCH",
           headers:{
             'content-type' : 'application/json'

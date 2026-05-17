@@ -1,6 +1,7 @@
 'use client';
 import { Button, FieldError, Input, Label, ListBox, TextArea, TextField, Select } from '@heroui/react';
 import React from 'react';
+// import { authClient } from "../lib/auth-client";
 
 const AddDestinationPage = () => {
   //get info from form 
@@ -11,11 +12,14 @@ const AddDestinationPage = () => {
         const destination  = Object.fromEntries(formData.entries())
         console.log(destination);
         
+        // const {data:tokenData} = await authClient.token()
+
         // server e j post korce oita ekane connect kora lage
-        const res = await fetch('http://localhost:8000/destination',{
+        const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/destination`,{
           method: "POST",
           headers:{
-            'content-type' : 'application/json'
+            'content-type' : 'application/json',
+            // authorization : `Bearer ${tokenData?.token}` //token pass
           },
           body: JSON.stringify(destination)
         })

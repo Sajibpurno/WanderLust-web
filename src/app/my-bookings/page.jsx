@@ -10,6 +10,12 @@ const MyBookingPage = async () => {
     const session = await auth.api.getSession({
         headers: await headers()
     });
+// server er jonne amon 
+    const {token} = await auth.api.getToken({
+       headers: await headers()
+     })
+// end
+
     const user = session?.user;
 
     // if no user than show
@@ -17,8 +23,9 @@ const MyBookingPage = async () => {
         <p>Please login to view bookings.</p>
     </div>;
 
-    const res = await fetch(`http://localhost:8000/booking/${user?.id}`, {
-        cache: 'no-store' // লেটেস্ট ডেটা পাওয়ার জন্য
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/booking/${user?.id}`, {
+        cache: 'no-store',
+        authorization:  `Bearer ${token}`
     });
     const bookingData = await res.json();
 
@@ -52,11 +59,14 @@ const MyBookingPage = async () => {
                                             size="sm" 
                                             variant="flat" 
                                             color={booking.status === 'Pending' ? "warning" : "success"}
-                                            startContent={booking.status === 'Pending' ? "" : "✓"}
                                             className="capitalize"
-                                        >
-                                            {booking.status || "Confirmed"}
-                                        </Chip>
+                                            >
+                                            {/* এখানে টিক চিহ্নটি লজিক্যালি বসিয়ে দিন */}
+                                            <div className="flex items-center gap-1">
+                                                {booking.status !== 'Pending' && <span>✓</span>}
+                                                <span>{booking.status || "Confirmed"}</span>
+                                            </div>
+                                        </Chip> 
                                     </div>
                                     
                                     <h2 className="text-2xl font-bold text-gray-800">{booking.destinationName}</h2>

@@ -48,11 +48,17 @@ const BookingCard = ({ desDetailsData }) => {
 
     console.log("Final Booking Data:", bookingData);
     
-   //server to clint api connect
-   const res = await fetch('http://localhost:8000/booking', {
+    // client teke token patabo akn
+    const {data: tokenData} = await authClient.token()
+    console.log(tokenData);
+    // end
+
+   //server to client api connect
+   const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/booking`, {
     method: "POST",
     headers: {
-      'content-type' : 'application/json'
+      'content-type' : 'application/json',
+      authorization : `Bearer ${tokenData?.token}` //token pass
     },
     body: JSON.stringify(bookingData)
    })

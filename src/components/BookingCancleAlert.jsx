@@ -3,16 +3,23 @@ import { TrashBin } from "@gravity-ui/icons";
 import {AlertDialog, Button} from "@heroui/react";
 import { redirect } from "next/navigation";
 import { toast } from 'react-toastify';
+import { authClient } from "../lib/auth-client";
 
 const BookingCancleAlert = ({booking}) => {
     const {_id, destinationName} = booking;
 
     // server a delete api baniye ekeane ese seta connect korchi-
     const handleCancel= async ()=>{
-     const res = await fetch(`http://localhost:8000/booking/${_id}`,{
+     // client teke token patabo akn
+         const {data: tokenData} = await authClient.token()
+         console.log(tokenData);
+         // end
+
+     const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/booking/${_id}`,{
         method: "DELETE",
         headers:{
-            'content-type': 'application/json'
+            'content-type': 'application/json',
+            authorization : `Bearer ${tokenData?.token}` //token pass
         }
      });
      const data = await res.json();

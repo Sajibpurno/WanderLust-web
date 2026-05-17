@@ -14,6 +14,7 @@ import { getDesDetailsData } from "../../../lib/data";
 import BookingCard from "../../../components/BookingCard";
 
 
+
 const DestinationDetailsPage = async ({ params }) => {
   const { id } = await params;
 
