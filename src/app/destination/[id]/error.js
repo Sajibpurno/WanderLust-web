@@ -1,36 +1,61 @@
-import React from 'react';
+'use strict';
+'use client'; // ⚠️ Next.js error component oboshoy client component hote hobe
 
-const ErrorPage = () => {
+import React, { useEffect } from 'react';
+
+// Next.js error page automatic "error" ar "reset" propty receive kore
+function Error({ error, reset }) {
+    
+    useEffect(() => {
+        // Log the error to an error reporting service
+        console.error("Caught by Global Error Boundary:", error);
+    }, [error]);
+
     return (
         <div className="min-h-screen flex items-center justify-center bg-[#FAF9F6] px-6 py-16">
             <div className="text-center max-w-lg">
-                <p className="text-xs uppercase tracking-[0.28em] text-[#1A1A1A]/40 mb-6">Error</p>
-                <h1 className="font-heading text-[clamp(5rem,18vw,10rem)] leading-none text-[#1A1A1A]/12 tracking-tight select-none">
-                    404 eror
+                <p className="text-xs uppercase tracking-[0.28em] text-[#FF4500] font-semibold mb-6">
+                    Something went wrong
+                </p>
+                
+                {/* 500 ba OOPS text responsive styling */}
+                <h1 className="font-heading text-[clamp(4rem,15vw,8rem)] font-bold leading-none text-[#1A1A1A]/10 tracking-tight select-none">
+                    OOPS!
                 </h1>
 
+                {/* Status Badge - Red/Orange theme for errors */}
                 <div className="relative inline-block -mt-4 mb-8">
-                    <span className="inline-block px-4 py-2 text-xs font-semibold uppercase tracking-widest bg-cyan-500 text-white rounded-full shadow-lg shadow-cyan-500/25 rotate-[-3deg]">
-                        Page Not Found
+                    <span className="inline-block px-4 py-2 text-xs font-semibold uppercase tracking-widest bg-[#FF4500] text-white rounded-full shadow-lg shadow-[#FF4500]/25 rotate-[2deg]">
+                        System Error
                     </span>
                 </div>
 
                 <h2 className="font-heading text-3xl text-[#1A1A1A] mb-4">
-                    This page isn&apos;t available
+                    An unexpected error occurred
                 </h2>
-                <p className="text-[#1A1A1A]/55 mb-10 leading-relaxed">
-                    The page you are looking for might have been removed, renamed, or is temporarily unavailable.
+                <p className="text-[#1A1A1A]/55 mb-10 leading-relaxed text-sm">
+                    {error?.message || "We apologize for the inconvenience. Our server encountered an internal glitch. Please try again or return home."}
                 </p>
 
-                <Link
-                    href="/"
-                    className="inline-flex items-center justify-center px-10 py-4 rounded-full bg-[#FF8C00] text-white font-semibold shadow-lg shadow-[#FF8C00]/25 hover:bg-[#e67e00] transition-all duration-300 hover:scale-[1.02]"
-                >
-                    Back to Homepage
-                </Link>
+                {/* Dui ta action button: Ekta current page reset korbe, arekta home-e nibe */}
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <button
+                        onClick={() => reset()} // Next.js built-in function to re-render the segment
+                        className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-full bg-[#1A1A1A] text-white font-semibold transition-all duration-300 hover:bg-[#333333] active:scale-[0.98]"
+                    >
+                        Try Again
+                    </button>
+                    
+                    <a
+                        href="/"
+                        className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-full bg-transparent border-2 border-[#1A1A1A]/20 text-[#1A1A1A] font-semibold transition-all duration-300 hover:border-[#1A1A1A] hover:bg-[#1A1A1A]/5 active:scale-[0.98]"
+                    >
+                        Go Back Home
+                    </a>
+                </div>
             </div>
         </div>
-    );
-};
+    )
+}
 
-export default ErrorPage;
+export default Error;
